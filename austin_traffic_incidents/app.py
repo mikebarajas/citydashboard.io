@@ -80,5 +80,6 @@ def pieChartData():
 
 
 if __name__ == "__main__":
+    print(os.environ.get("PORT"))
     app.run(port=os.environ.get("PORT"), host="0.0.0.0")
 
