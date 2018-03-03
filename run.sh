@@ -1,1 +1,0 @@
-FLASK_APP=austin_traffic_incidents/app.py flask run
