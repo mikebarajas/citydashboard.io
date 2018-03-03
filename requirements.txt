@@ -29,4 +29,5 @@ Cython==0.26.1
 cytoolz==0.8.2
 dask==0.15.2
 Flask==0.12.2
+gunicorn==19.7.1
 numpy==1.13.1
