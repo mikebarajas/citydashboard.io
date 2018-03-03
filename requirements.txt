@@ -28,16 +28,5 @@ cycler==0.10.0
 Cython==0.26.1
 cytoolz==0.8.2
 dask==0.15.2
-datashape==0.5.4
-decorator==4.1.2
-distlib==0.2.5
-distributed==1.18.3
-Django==2.0
-docutils==0.14
-entrypoints==0.2.3
-et-xmlfile==1.0.1
-fastcache==1.0.2
-feedparser==5.2.1
-filelock==2.0.12
 Flask==0.12.2
 numpy==1.13.1
