@@ -1,0 +1,35 @@
+.form-control {
+  display: inline-block;
+  width: 250px;
+  margin-top: 50px;
+}
+
+h4 {
+  text-align: center;
+  color: 	#FFFAF0
+}
+
+h2 {
+  text-align: center;
+}
+
+h1 {
+  text-align: center;
+  color: 	#FFFAF0
+}
+
+select {
+  left: 100px;
+  
+}
+
+p {
+  text-align: center;
+}
+
+.li {
+  background-color: #FFFFFF;
+  font-size: 20px;
+}
+
+#mapid { height: 400px; }
