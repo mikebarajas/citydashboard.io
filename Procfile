@@ -1,1 +1,1 @@
-web: python ./austin_traffic_incidents/app.py
+web: gunicorn app:app
