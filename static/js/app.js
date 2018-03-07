@@ -140,11 +140,33 @@ function buildMap(data) {
         lon.push(data[i].Longitude);
         incident.push(data[i]["Issue Reported"])}
     
+        // Define streetmap and darkmap layers
+    var streetmap = L.tileLayer("https://api.mapbox.com/styles/v1/mapbox/outdoors-v10/tiles/256/{z}/{x}/{y}?" +
+    "access_token=pk.eyJ1Ijoia2pnMzEwIiwiYSI6ImNpdGRjbWhxdjAwNG0yb3A5b21jOXluZTUifQ." +
+    "T6YbdDixkOBWH_k9GbS8JQ");
+
+    var satalitemap = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
+        attribution: 'Tiles &copy; Esri &mdash; Source: Esri, i-cubed, USDA, USGS, AEX, GeoEye, Getmapping, Aerogrid, IGN, IGP, UPR-EGP, and the GIS User Community'
+    });
+
+    // Define a baseMaps object to hold our base layers
+    var baseMaps = {
+    "Street Map": streetmap,
+    "Satelite View": satalitemap
+    };
+    
+    //stop!!!
+
     // Make map title layer
-    var mymap = L.map('mapid').setView([30.27, -97.74], 10);
-    L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
-        attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
-    }).addTo(mymap);
+    var mymap = L.map('mapid', {
+        center: [30.27, -97.74],
+        zoom: 10,
+        layers: [streetmap, satalitemap]
+    })
+
+    // L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
+    //     attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
+    // }).addTo(mymap);
 
     // Creating a new marker cluster group
     var markers = L.markerClusterGroup();
@@ -158,6 +180,17 @@ function buildMap(data) {
     
     // Add our marker cluster layer to the map
     mymap.addLayer(markers);
+    
+    var overlays = {
+        "Traffic Incidents": markers
+      };
+
+    // Create a layer control
+    // Pass in our baseMaps and overlayMaps
+    // Add the layer control to the map
+    L.control.layers(baseMaps, overlays, {
+        collapsed: false
+    }).addTo(mymap);
 };
 
 function buildTable(data) {

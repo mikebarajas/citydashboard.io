@@ -55,9 +55,9 @@
                 <div class="col-lg-12">
                   <hr>
                   <br>
-                    <h4>Filter by Incident Type</h4>
+                    <h4>Place Dataset Tabs Here</h4>
                   <br>
-                    <select class="styled-select" id="selDataset" onchange="optionChanged(this.value)"></select>
+                    <!-- <select class="styled-select" id="selDataset" onchange="optionChanged(this.value)"></select> -->
                 </div>  
             </div>
         </li>
@@ -71,12 +71,18 @@
         <li class="nav-item">
           <a class="nav-link active" href="#mapCard">Map</a>
         </li>
+        </li>
+        <li>
+          <a id="dropdownTab"> Incident Filter</a>
+        <!-- </li>
+        <li> -->
+          <select class="styled-select" id="selDataset" onchange="optionChanged(this.value)"></select>
+        </li>
         <li class="nav-item">
           <a class="nav-link" href="#pieCard">Top 10 Incidents</a>
         </li>
         <li class="nav-item">
           <a class="nav-link" href="#dataCard">Raw Data Table</a>
-        </li>
       </ul>
     </div>
     <div class="card-block" id="mapCard">
