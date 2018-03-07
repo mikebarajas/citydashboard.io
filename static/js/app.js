@@ -161,7 +161,10 @@ function buildMap(data) {
     var mymap = L.map('mapid', {
         center: [30.27, -97.74],
         zoom: 10,
-        layers: [streetmap, satalitemap]
+        layers: [streetmap, satalitemap],
+        minZoom: 10,
+        scrollWheelZoom: false
+
     })
 
     // L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
