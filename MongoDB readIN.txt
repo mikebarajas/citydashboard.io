@@ -1,0 +1,3 @@
+mongoimport --db austindb --collection austinData --type csv --columnsHaveTypes --fields " 
+address.string(),issue_reported.string(),location_latitude.double(),location_longitude.double(),
+published_date.string()" --file ~/Desktop/austin_dashboard/citydashboard.io/cleanData.csv
