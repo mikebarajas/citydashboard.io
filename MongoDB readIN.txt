@@ -1,3 +1,4 @@
-mongoimport --db austindb --collection austinData --type csv --columnsHaveTypes --fields " 
-address.string(),issue_reported.string(),location_latitude.double(),location_longitude.double(),
-published_date.string()" --file ~/Desktop/austin_dashboard/citydashboard.io/cleanData.csv
+mongoDB use this type to read in csv
+
+mongoimport --db austinincidents --collection incident --type csv --headerline --file "C:\Users\margie\Desktop\austin
+_dashboard\citydashboard.io/cleanData.csv"
