@@ -154,8 +154,6 @@ function buildMap(data) {
     "Street Map": streetmap,
     "Satelite View": satalitemap
     };
-    
-    //stop!!!
 
     // Make map title layer
     var mymap = L.map('mapid', {
@@ -167,10 +165,6 @@ function buildMap(data) {
 
     })
 
-    // L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
-    //     attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
-    // }).addTo(mymap);
-
     // Creating a new marker cluster group
     var markers = L.markerClusterGroup();
 
@@ -181,11 +175,20 @@ function buildMap(data) {
             .bindPopup(incident[i]));}
     }
     
+      // Creating a geoJSON layer with the retrieved data
+    var geoJson = L.geoJson(districts, {
+        color: "white",
+        fillOpacity: 0.5,
+        weight: 1.5
+    });
+
+
     // Add our marker cluster layer to the map
     mymap.addLayer(markers);
     
     var overlays = {
-        "Traffic Incidents": markers
+        "Traffic Incidents": markers,
+        "Jurisdiction Boundaries": geoJson
       };
 
     // Create a layer control
