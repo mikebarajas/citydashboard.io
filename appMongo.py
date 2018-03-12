@@ -15,8 +15,7 @@ import appApi
 ##########################################################################
 url = "https://data.austintexas.gov/resource/r3af-2r8x.json?$limit=50000&$offset=0"
 
-# def get_data():
-    # get the json from austin data api
+# get the json from austin data api
 traffic_response = req.get(url)
 traffic_json = traffic_response.json()
 time.sleep(1)
@@ -48,18 +47,14 @@ DBS_NAME = 'austinDB'
 COLLECTION_NAME = 'austinData'
 data = json_util.loads(xyz.to_json(orient='records'))
 connection = MongoClient(MONGODB_HOST, MONGODB_PORT)
-# blah = connection.austinDB.dropDatabase()
+
 db = connection.austinDB
 db.austinData.remove()
 time.sleep(1)
-# db.dropDatabase()
+
 austinData = db.austinData
 posts_id = austinData.insert_many(data)
 
-MONGODB_HOST = 'localhost'
-MONGODB_PORT = 27017
-DBS_NAME = 'austinDB'
-COLLECTION_NAME = 'austinData'
 app = Flask(__name__)
 
 
