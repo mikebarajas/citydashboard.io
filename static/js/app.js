@@ -1,4 +1,3 @@
-
 function init() {
     getData();
     buildDropdown();
@@ -33,74 +32,74 @@ function buildDropdown() {
 };
 
 function BuildPieChart() {
-    Plotly.d3.json('/api/v1.1/pie/', function(error, data) {
-        if (error) return console.warn(error);
+    // Plotly.d3.json('/api/v1.1/pie/', function(error, data) {
+    //     if (error) return console.warn(error);
 
-       labels=[];
-       values=[];
-       for (i = 0; i < 10; i++) {
-           labels.push(data['issue_reported'][i].toString());
-           values.push(+data['location_latitude'][i]);
-       };
+    //    labels=[];
+    //    values=[];
+    //    for (i = 0; i < 10; i++) {
+    //        labels.push(data['issue_reported'][i].toString());
+    //        values.push(+data['location_latitude'][i]);
+    //    };
 
-        var pieData = [{
-            direction: 'counterclockwise', 
-            hole: 0.7, 
-            labels: labels,
-            marker: {
-              colors: ['rgb(255, 255, 204)', 'rgb(161, 218, 180)', 'rgb(65, 182, 196)', 'rgb(44, 127, 184)', 'rgb(8, 104, 172)', 'rgb(37, 52, 148)'], 
-              line: {width: 1}
-            }, 
-            pull: 0.02, 
-            rotation: 0, 
-            sort: true, 
-            textfont: {
-              family: 'Droid Serif', 
-              size: 16
-            }, 
-            textinfo: 'percent', 
-            textposition: 'outside', 
-            type: 'pie', 
-            uid: '88d92e', 
-            values: values, 
-          }];
+    //     var pieData = [{
+    //         direction: 'counterclockwise', 
+    //         hole: 0.7, 
+    //         labels: labels,
+    //         marker: {
+    //           colors: ['rgb(255, 255, 204)', 'rgb(161, 218, 180)', 'rgb(65, 182, 196)', 'rgb(44, 127, 184)', 'rgb(8, 104, 172)', 'rgb(37, 52, 148)'], 
+    //           line: {width: 1}
+    //         }, 
+    //         pull: 0.02, 
+    //         rotation: 0, 
+    //         sort: true, 
+    //         textfont: {
+    //           family: 'Droid Serif', 
+    //           size: 16
+    //         }, 
+    //         textinfo: 'percent', 
+    //         textposition: 'outside', 
+    //         type: 'pie', 
+    //         uid: '88d92e', 
+    //         values: values, 
+    //       }];
 
-        var pieLayout = {
-            autosize: true, 
-            font: {
-              family: '"Open Sans", verdana, arial, sans-serif', 
-              size: 15
-            }, 
-            height: 675, 
-            legend: {
-              x: 0.374001448087, 
-              y: 0.71051567555, 
-              bgcolor: 'rgb(255, 255, 255)', 
-              borderwidth: 2, 
-              font: {
-                color: '#000', 
-                family: 'Helvetica, sans-serif', 
-                size: 15
-              }, 
-              orientation: 'v'
-            }, 
-            margin: {
-              r: 150, 
-              t: 50, 
-              b: 50, 
-              l: 50
-            }, 
-            paper_bgcolor: 'rgb(255, 255, 255)', 
-            titlefont: {
-              color: '#000', 
-              family: 'Overpass', 
-              size: 58
-            }, 
-            width: 850
-          };
-        var PIE = document.getElementById('pie');
-        Plotly.plot(PIE, pieData, pieLayout);
-    });
+    //     var pieLayout = {
+    //         autosize: true, 
+    //         font: {
+    //           family: '"Open Sans", verdana, arial, sans-serif', 
+    //           size: 15
+    //         }, 
+    //         height: 675, 
+    //         legend: {
+    //           x: 0.374001448087, 
+    //           y: 0.71051567555, 
+    //           bgcolor: 'rgb(255, 255, 255)', 
+    //           borderwidth: 2, 
+    //           font: {
+    //             color: '#000', 
+    //             family: 'Helvetica, sans-serif', 
+    //             size: 15
+    //           }, 
+    //           orientation: 'v'
+    //         }, 
+    //         margin: {
+    //           r: 150, 
+    //           t: 50, 
+    //           b: 50, 
+    //           l: 50
+    //         }, 
+    //         paper_bgcolor: 'rgb(255, 255, 255)', 
+    //         titlefont: {
+    //           color: '#000', 
+    //           family: 'Overpass', 
+    //           size: 58
+    //         }, 
+    //         width: 850
+    //       };
+    //     var PIE = document.getElementById('pie');
+    //     Plotly.plot(PIE, pieData, pieLayout);
+    // });
 
 };
      
@@ -151,15 +150,15 @@ function buildMap(data) {
 
     // Define a baseMaps object to hold our base layers
     var baseMaps = {
-    "Street Map": streetmap,
-    "Satelite View": satalitemap
+        "Satelite View": satalitemap,
+        "Street Map": streetmap
     };
 
     // Make map title layer
     var mymap = L.map('mapid', {
         center: [30.27, -97.74],
         zoom: 10,
-        layers: [streetmap, satalitemap],
+        layers: [satalitemap, streetmap],
         minZoom: 10,
         scrollWheelZoom: false
 
