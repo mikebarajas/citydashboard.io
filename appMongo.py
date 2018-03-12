@@ -1,17 +1,74 @@
 from flask import Flask, render_template, jsonify
 from pymongo import MongoClient
-import json
+import sys, json
 from bson import json_util
 from bson.json_util import dumps
 import pandas as pd
+import time
+# import get_data from appApi
+import requests as req
+import time
+import datetime
+# from pymongo import Connection
 
-app = Flask(__name__)
+url = "https://data.austintexas.gov/resource/r3af-2r8x.json?$limit=50000&$offset=0"
+
+# def get_data():
+    # get the json from austin data api
+traffic_response = req.get(url)
+traffic_json = traffic_response.json()
+time.sleep(2)
+
+# append json into DataFrame
+df = pd.DataFrame(traffic_json)
+time.sleep(2)
+
+# Selecting specific columns needed
+clean_df = df[['address','issue_reported','location_latitude', 'location_longitude', 'published_date']]
+
+# Drop any NAN values and append to a list
+dropped = clean_df.dropna()
+newdate = dropped.loc[0:, 'published_date']
+listy = []
+for i in newdate:
+    listy.append(i[0:10])
+time.sleep(2)
+
+#  delete old values for published_date and pass in new list to published_date column
+xyz = dropped.drop('published_date', axis=1)
+xyz['published_date'] = listy
+time.sleep(2)
+
 
 MONGODB_HOST = 'localhost'
 MONGODB_PORT = 27017
-DBS_NAME = 'austinincidents'
-COLLECTION_NAME = 'incident'
+DBS_NAME = 'austinDB'
+COLLECTION_NAME = 'austinData'
+data = json_util.loads(xyz.to_json(orient='records'))
+connection = MongoClient(MONGODB_HOST, MONGODB_PORT)
+db = connection.austinDB
+austinData = db.austinData
+posts_id = austinData.insert_many(data)
+# print(posts_id)
+
+    # return print(posts_id)
+
+
+app = Flask(__name__)
+# database = get_data
+# MONGODB_HOST = 'localhost'
+# MONGODB_PORT = 27017
+# DBS_NAME = 'austinDB'
+# COLLECTION_NAME = 'austinData'
 FIELDS = {'_id': False, 'address': True, 'issue_reported': True, 'location_latitude': True, 'location_longitude': True, 'published_date': True}
+# data = json_util.loads(database)
+# connection = MongoClient(MONGODB_HOST, MONGODB_PORT)
+# db = connection.austinDB
+# austinData = db.austinData
+# posts_id = austinData.insert_many(get_data).inserted_id
+# whatever = austinDatas.find()
+# print(whatever)
+# print(posts_id)
 
 @app.route('/')
 def index():
