@@ -9,7 +9,7 @@ init();
 
 function getData() {
     // Use a request to grab the entire data set
-    Plotly.d3.json("/api/v1.1/", function(error, data) {
+    Plotly.d3.json("austin/data", function(error, data) {
         if (error) return console.warn(error);
         // need to set timeout conditional on data loading
         buildGraphdivs(data);
@@ -20,7 +20,7 @@ function getData() {
 function buildDropdown() {
     var selDataset = document.getElementById("selDataset");
 
-    Plotly.d3.json('/incident_types', function(error, data){
+    Plotly.d3.json('incident_types', function(error, data){
         if (error) return console.warn(error);
         for (i = 0; i < data.length; i++) {
                     IncidentType=data[i];
@@ -39,8 +39,8 @@ function BuildPieChart() {
        labels=[];
        values=[];
        for (i = 0; i < 10; i++) {
-           labels.push(data['Issue Reported'][i].toString());
-           values.push(+data['Num Incidents'][i]);
+           labels.push(data['issue_reported'][i].toString());
+           values.push(+data['location_latitude'][i]);
        };
 
         var pieData = [{
@@ -106,11 +106,11 @@ function BuildPieChart() {
      
 function optionChanged(incident_type) {
     // Use a request to grab the json data needed for all charts
-    Plotly.d3.json("/api/v1.1/", function(error, data) {
+    Plotly.d3.json("austin/data", function(error, data) {
         if (error) return console.warn(error);
         var userOption = []
         data.reduce(function(all, x, index) {
-            if (x['Issue Reported'].toLowerCase() == incident_type.toLowerCase()) {
+            if (x['issue_reported'].toLowerCase() == incident_type.toLowerCase()) {
                 userOption.push(x);
             }
             return userOption;
@@ -136,9 +136,9 @@ function buildMap(data) {
     var incident = [];
     
     for (i = 0; i < data.length; i++) { 
-        lat.push(data[i].Latitude);
-        lon.push(data[i].Longitude);
-        incident.push(data[i]["Issue Reported"])}
+        lat.push(data[i].location_latitude);
+        lon.push(data[i].location_longitude);
+        incident.push(data[i]["issue_reported"])}
     
         // Define streetmap and darkmap layers
     var streetmap = L.tileLayer("https://api.mapbox.com/styles/v1/mapbox/outdoors-v10/tiles/256/{z}/{x}/{y}?" +
@@ -199,7 +199,7 @@ function buildMap(data) {
 function buildTable(data) {
     var tableArray =[];
     for (i = 0; i < data.length; i++) { 
-        tableArray.push([data[i]["Issue Reported"], data[i]["Published Date"], data[i]["Address"], data[i]["Location"]]);
+        tableArray.push([data[i]["issue_reported"], data[i]["published_date"], data[i]["address"], data[i]["location_latitude"], data[i]["location_longitude"]]);
     }
     $(document).ready(function() {
         $('#rawData').DataTable( {
@@ -208,7 +208,8 @@ function buildTable(data) {
                 { title: "Incident" },
                 { title: "Date" },
                 { title: "Address" },
-                { title: "Location" }
+                { title: "Latitude" },
+                { title: "Longitude" }
             ]
         } );
     } );

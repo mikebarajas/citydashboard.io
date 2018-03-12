@@ -5,20 +5,19 @@ import datetime
 import json
 # from pymongo import Connection
 
-url = "https://data.austintexas.gov/resource/r3af-2r8x.json?$limit=50000&$offset=0"
+def scrape():
 
-# if __name__ == "__main__":
-#     con = Connection()
-#     db.con.text_database
-#     people = db.people
+    url = "https://data.austintexas.gov/resource/r3af-2r8x.json?$limit=50000&$offset=0"
 
-def get_data():
-    # get the json from austin data api
+    # def get_data():
+        # get the json from austin data api
     traffic_response = req.get(url)
     traffic_json = traffic_response.json()
+    time.sleep(1)
 
     # append json into DataFrame
     df = pd.DataFrame(traffic_json)
+    time.sleep(1)
 
     # Selecting specific columns needed
     clean_df = df[['address','issue_reported','location_latitude', 'location_longitude', 'published_date']]
@@ -29,12 +28,22 @@ def get_data():
     listy = []
     for i in newdate:
         listy.append(i[0:10])
+    time.sleep(2)
 
     #  delete old values for published_date and pass in new list to published_date column
-    dropped = dropped.drop('published_date', axis=1)
-    dropped['published_date'] = listy
+    xyz = dropped.drop('published_date', axis=1)
+    xyz['published_date'] = listy
+    time.sleep(2)
 
 
-    return dropped.to_dict(orient="records")
+    MONGODB_HOST = 'localhost'
+    MONGODB_PORT = 27017
+    DBS_NAME = 'austinDB'
+    COLLECTION_NAME = 'austinData'
+    data = json_util.loads(xyz.to_json(orient='records'))
+    connection = MongoClient(MONGODB_HOST, MONGODB_PORT)
+    db = connection.austinDB
+    austinData = db.austinData
+    posts_id = austinData.insert_many(data)
 
-get_data()
+    return data
