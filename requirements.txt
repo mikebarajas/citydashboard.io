@@ -1,5 +1,4 @@
 
-conda==4.3.27
 DateTime==4.2
 Flask==0.12.2
 Flask-Cors==3.0.3
