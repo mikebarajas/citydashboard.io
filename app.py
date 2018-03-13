@@ -8,7 +8,16 @@ import time
 import requests as req
 import time
 import datetime
-import appApi
+from flask_pymongo import PyMongo
+import os 
+
+MONGODB_URI = os.environ.get('MONGODB_URI')
+if not MONGODB_URI:
+    MONGODB_URI = "mongodb://localhost:27017/austinDB"
+
+app = Flask(__name__)
+app.config['MONGO_URI'] = MONGODB_URI
+mongo = PyMongo(app)
 
 ##########################################################################
 ####################  Creating the Database  #############################
