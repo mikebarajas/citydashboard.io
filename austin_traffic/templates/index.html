@@ -5,8 +5,8 @@
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-  <meta name="description" content="">
-  <meta name="author" content="">
+  <meta name="description" content="Dashboard for Austin traffic incidents that generates a map of issues and basic visualizations of the data">
+  <meta name="author" content="Mike Barajas and Carlos Guevara">
   <title>Austin Traffic Incident Dash Board</title>
   <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
   <link rel="icon" type="image/png" href="../static/css/favicon.png" sizes="128x128">
@@ -21,30 +21,27 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" />
   <link rel="stylesheet" href="https://cdn.datatables.net/1.10.16/css/jquery.dataTables.min.css" />
   <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
-
   <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
-
   <!-- Latest compiled and minified JavaScript -->
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
-
+  <!-- Leaflet stylesheets -->
   <link rel="stylesheet" type="text/css" href="http://cdn.leafletjs.com/leaflet/v0.7.7/leaflet.css" />
   <link rel="stylesheet" type="text/css" href="http://cdnjs.cloudflare.com/ajax/libs/leaflet.markercluster/0.4.0/MarkerCluster.css" />
   <link rel="stylesheet" type="text/css" href="http://cdnjs.cloudflare.com/ajax/libs/leaflet.markercluster/0.4.0/MarkerCluster.Default.css" />
-
+  <!-- Leaflet JavaScript Files -->
   <script type='text/javascript' src='http://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js'></script>
   <script type='text/javascript' src='http://cdn.leafletjs.com/leaflet/v0.7.7/leaflet.js'></script>
   <script type='text/javascript' src='http://cdnjs.cloudflare.com/ajax/libs/leaflet.markercluster/0.4.0/leaflet.markercluster.js'></script>
-  <!-- Import Plotly -->
+  <!-- Plotly -->
   <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
-  <!-- Import D3 -->
+  <!-- D3 -->
   <script src="https://d3js.org/d3.v4.min.js"></script>
-
 </head>
 
 <body class="fixed-nav sticky-footer bg-dark" id="page-top">
   <h1 id="Title"><center>City of Austin Traffic Incidents</center></h1>
-  <!-- Navigation-->
+<!-- Navigation-->
   <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top" id="mainNav">
     <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
@@ -56,9 +53,9 @@
                 <div class="col-lg-12">
                   <hr>
                   <br>
-                    <h4>Place Dataset Tabs Here</h4>
+<!-- Placeholder for dataset expansion -->
+                    <!-- <h4>Place Dataset Tabs Here</h4> -->
                   <br>
-                    <!-- <select class="styled-select" id="selDataset" onchange="optionChanged(this.value)"></select> -->
                 </div>  
             </div>
         </li>
@@ -66,7 +63,7 @@
     </div>
   </nav>
   <div class="content-wrapper">
-<!-- Map Container-->
+<!-- Content Tabs-->
     <div class="card-header">
       <ul class="nav nav-tabs card-header-tabs">
         <li class="nav-item">
@@ -74,9 +71,8 @@
         </li>
         </li>
         <li>
+<!-- Dropdown Incident Filter -->
           <a id="dropdownTab"> Incident Filter</a>
-        <!-- </li>
-        <li> -->
           <select class="styled-select" id="selDataset" onchange="optionChanged(this.value)"></select>
         </li>
         <li class="nav-item">
@@ -86,6 +82,7 @@
           <a class="nav-link" href="#dataCard">Raw Data Table</a>
       </ul>
     </div>
+<!-- Map of Traffic Issues -->
     <div class="card-block" id="mapCard">
       <div class="col-lg-12">
         <div class="card mb-12">
@@ -99,7 +96,8 @@
             </div>
           </div>
         </div>
-        <div class="card-block" id="pieCard">
+<!-- Top 10 Incidents Doughnut Chart -->
+        <!-- <div class="card-block" id="pieCard">
           <div class="col-lg-12">
             <div class="card mb-12">
               <div class="card-header">
@@ -111,7 +109,8 @@
                 </div>
             </div>
           </div>
-        </div>
+        </div> -->
+<!-- Incidents Table-->
         <div class="card-block" id="dataCard">
           <div class="col-lg-12">
             <div class="card mb-12">
@@ -131,12 +130,6 @@
         </div>  
       </div>
   </body>  
-
-      
-<!-- Incidents Pie Graph-->
-
-<!-- Incidents Table-->
-
 <!-- Scroll to Top Button-->
     <a class="scroll-to-top rounded" href="#page-top">
       <i class="fa fa-angle-up"></i>
