@@ -11,17 +11,17 @@ import datetime
 from flask_pymongo import PyMongo
 import os 
 
+# Connect to mLab
 MONGODB_URI = os.environ.get('MONGODB_URI')
 if not MONGODB_URI:
     MONGODB_URI = "mongodb://localhost:27017/austinDB"
 
+# Initialize Flask
 app = Flask(__name__)
 app.config['MONGO_URI'] = MONGODB_URI
 mongo = PyMongo(app)
 
-##########################################################################
-####################  Creating the Database  #############################
-##########################################################################
+# Collect JSON from API call
 url = "https://data.austintexas.gov/resource/r3af-2r8x.json?$limit=50000&$offset=0"
 
 # def get_data():
@@ -49,14 +49,16 @@ time.sleep(1)
 xyz = dropped.drop('published_date', axis=1)
 xyz['published_date'] = listy
 time.sleep(1)
+insertData(xyz)
 
 
-MONGODB_HOST = 'localhost'
-MONGODB_PORT = 27017
+
+# MONGODB_HOST = 'localhost'
+# MONGODB_PORT = 27017
 DBS_NAME = 'austinDB'
 COLLECTION_NAME = 'austinData'
 data = json_util.loads(xyz.to_json(orient='records'))
-connection = MongoClient(MONGODB_HOST, MONGODB_PORT)
+# connection = MongoClient(MONGODB_HOST, MONGODB_PORT)
 # blah = connection.austinDB.dropDatabase()
 db = connection.austinDB
 db.austinData.remove()
@@ -64,12 +66,6 @@ time.sleep(1)
 # db.dropDatabase()
 austinData = db.austinData
 posts_id = austinData.insert_many(data)
-
-MONGODB_HOST = 'localhost'
-MONGODB_PORT = 27017
-DBS_NAME = 'austinDB'
-COLLECTION_NAME = 'austinData'
-app = Flask(__name__)
 
 
 FIELDS = {'_id': False, 'address': True, 'issue_reported': True, 'location_latitude': True, 'location_longitude': True, 'published_date': True}
@@ -80,8 +76,9 @@ def index():
 
 @app.route("/austin/data")
 def austin_incidents():
-    connection = MongoClient(MONGODB_HOST, MONGODB_PORT)
-    collection = connection[DBS_NAME][COLLECTION_NAME]
+    
+    # connection = MongoClient(MONGODB_HOST, MONGODB_PORT)
+    # collection = connection[DBS_NAME][COLLECTION_NAME]
     incidents = collection.find(projection=FIELDS)
     json_incidents = []
     for incident in incidents:
@@ -127,4 +124,4 @@ def pieChartData():
     return jsonify(dictionary)
 
 if __name__ == "__main__":
-    app.run(host="0.0.0.0", port=5000, debug=True)
+    app.run(debug=True)
