@@ -8,20 +8,18 @@ import time
 import requests as req
 import time
 import datetime
-from flask_pymongo import PyMongo
 import os 
 
-# Connect to mLab
 MONGODB_URI = os.environ.get('MONGODB_URI')
 if not MONGODB_URI:
     MONGODB_URI = "mongodb://localhost:27017/austinDB"
 
-# Initialize Flask
 app = Flask(__name__)
-app.config['MONGO_URI'] = MONGODB_URI
-mongo = PyMongo(app)
+connection = MongoClient(MONGODB_URI)
 
-# Collect JSON from API call
+##########################################################################
+####################  Creating the Database  #############################
+##########################################################################
 url = "https://data.austintexas.gov/resource/r3af-2r8x.json?$limit=50000&$offset=0"
 
 # def get_data():
@@ -49,23 +47,23 @@ time.sleep(1)
 xyz = dropped.drop('published_date', axis=1)
 xyz['published_date'] = listy
 time.sleep(1)
-insertData(xyz)
 
 
-
-# MONGODB_HOST = 'localhost'
+# MONGODB_HOST = 'ds213209.mlab.com'
 # MONGODB_PORT = 27017
-DBS_NAME = 'austinDB'
-COLLECTION_NAME = 'austinData'
+# DBS_NAME = 'austinDB'
+# COLLECTION_NAME = 'austinData'
 data = json_util.loads(xyz.to_json(orient='records'))
 # connection = MongoClient(MONGODB_HOST, MONGODB_PORT)
 # blah = connection.austinDB.dropDatabase()
-db = connection.austinDB
+
+db = connection.db
 db.austinData.remove()
 time.sleep(1)
 # db.dropDatabase()
 austinData = db.austinData
 posts_id = austinData.insert_many(data)
+
 
 
 FIELDS = {'_id': False, 'address': True, 'issue_reported': True, 'location_latitude': True, 'location_longitude': True, 'published_date': True}
@@ -76,52 +74,39 @@ def index():
 
 @app.route("/austin/data")
 def austin_incidents():
-    
-    # connection = MongoClient(MONGODB_HOST, MONGODB_PORT)
-    # collection = connection[DBS_NAME][COLLECTION_NAME]
-    incidents = collection.find(projection=FIELDS)
+    incidents = austinData.find(projection=FIELDS)
     json_incidents = []
     for incident in incidents:
         json_incidents.append(incident)
     json_incidents = json.dumps(json_incidents, default=json_util.default)
-    connection.close()
     return json_incidents
 
 @app.route("/incident_types")
 def incident_types():
-    connection = MongoClient(MONGODB_HOST, MONGODB_PORT)
-    collection = connection[DBS_NAME][COLLECTION_NAME]
-    incidents = collection.distinct( "issue_reported" )
+    incidents = austinData.distinct( "issue_reported" )
     json_incidents = []
     for incident in incidents:
         json_incidents.append(incident)
     json_incidents = json.dumps(json_incidents, default=json_util.default)
-    connection.close()
     return json_incidents
 
 @app.route("/dates")
 def dates():
-    connection = MongoClient(MONGODB_HOST, MONGODB_PORT)
-    collection = connection[DBS_NAME][COLLECTION_NAME]
-    dates = collection.distinct( "published_date" )
+    dates = austinData.distinct( "published_date" )
     json_dates = []
     for date in dates: 
         json_dates.append(date)
     json_dates = json.dumps(json_dates, default=json_util.default)
-    connection.close()
     return json_dates 
 
 @app.route("/api/v1.1/pie/")
 def pieChartData():
-    connection = MongoClient(MONGODB_HOST, MONGODB_PORT)
-    collection = connection[DBS_NAME][COLLECTION_NAME]
-    issues = collection.find(projection=FIELDS)
+    issues = austinData.find(projection=FIELDS)
     df = pd.DataFrame(list(issues))
     top10=df[['issue_reported','location_latitude']].groupby(['issue_reported']).count().sort_values('location_latitude',ascending=False)[:10].reset_index().rename(columns={'Location':'Num Incidents'})
     json = top10.reset_index(drop=True)
     dictionary = json.to_dict(orient='records')
-    connection.close()
     return jsonify(dictionary)
 
 if __name__ == "__main__":
-    app.run(debug=True)
+    app.run(host="0.0.0.0", port=5000, debug=True)
