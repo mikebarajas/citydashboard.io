@@ -58,7 +58,7 @@ data = json_util.loads(xyz.to_json(orient='records'))
 # blah = connection.austinDB.dropDatabase()
 
 db = connection.db
-# db.austinData.remove()
+db.austinData.collection.remove()
 time.sleep(1)
 # db.dropDatabase()
 austinData = db.austinData
@@ -74,7 +74,7 @@ def index():
 
 @app.route("/austin/data")
 def austin_incidents():
-    incidents = austinData.find(projection=FIELDS)
+    incidents = austinData.collection.find(projection=FIELDS)
     json_incidents = []
     for incident in incidents:
         json_incidents.append(incident)
@@ -83,7 +83,7 @@ def austin_incidents():
 
 @app.route("/incident_types")
 def incident_types():
-    incidents = austinData.distinct( "issue_reported" )
+    incidents = austinData.collection.distinct( "issue_reported" )
     json_incidents = []
     for incident in incidents:
         json_incidents.append(incident)
@@ -92,7 +92,7 @@ def incident_types():
 
 @app.route("/dates")
 def dates():
-    dates = austinData.distinct( "published_date" )
+    dates = austinData.collection.distinct( "published_date" )
     json_dates = []
     for date in dates: 
         json_dates.append(date)
@@ -101,7 +101,7 @@ def dates():
 
 @app.route("/api/v1.1/pie/")
 def pieChartData():
-    issues = austinData.find(projection=FIELDS)
+    issues = austinData.collection.find(projection=FIELDS)
     df = pd.DataFrame(list(issues))
     top10=df[['issue_reported','location_latitude']].groupby(['issue_reported']).count().sort_values('location_latitude',ascending=False)[:10].reset_index().rename(columns={'Location':'Num Incidents'})
     json = top10.reset_index(drop=True)
