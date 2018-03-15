@@ -62,7 +62,7 @@ db = connection.db
 time.sleep(1)
 # db.dropDatabase()
 austinData = db.austinData
-posts_id = austinData.insert_many(data)
+posts_id = austinData.collection.insert_many(data)
 
 
 
