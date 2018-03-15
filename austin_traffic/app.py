@@ -15,7 +15,7 @@ if not MONGODB_URI:
     MONGODB_URI = "mongodb://localhost:27017/austinDB"
 
 app = Flask(__name__)
-connection = MongoClient(MONGODB_URI)
+connection = MongoClient(MONGODB_URI).get_database()
 
 ##########################################################################
 ####################  Creating the Database  #############################
