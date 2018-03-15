@@ -58,7 +58,7 @@ data = json_util.loads(xyz.to_json(orient='records'))
 # blah = connection.austinDB.dropDatabase()
 
 db = connection.db
-db.austinData.remove()
+# db.austinData.remove()
 time.sleep(1)
 # db.dropDatabase()
 austinData = db.austinData
