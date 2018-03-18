@@ -20,10 +20,9 @@ connection = MongoClient(MONGODB_URI).get_database()
 ##########################################################################
 ####################  Creating the Database  #############################
 ##########################################################################
-url = "https://data.austintexas.gov/resource/r3af-2r8x.json?$limit=50000&$offset=0"
+url = "https://data.austintexas.gov/resource/r3af-2r8x.json?$limit=1000&$offset=0"
 
-# def get_data():
-    # get the json from austin data api
+
 traffic_response = req.get(url)
 traffic_json = traffic_response.json()
 time.sleep(1)
@@ -49,18 +48,10 @@ xyz['published_date'] = listy
 time.sleep(1)
 
 
-# MONGODB_HOST = 'ds213209.mlab.com'
-# MONGODB_PORT = 27017
-# DBS_NAME = 'austinDB'
-# COLLECTION_NAME = 'austinData'
 data = json_util.loads(xyz.to_json(orient='records'))
-# connection = MongoClient(MONGODB_HOST, MONGODB_PORT)
-# blah = connection.austinDB.dropDatabase()
-
 db = connection.db
 db.austinData.collection.remove()
 time.sleep(1)
-# db.dropDatabase()
 austinData = db.austinData
 posts_id = austinData.collection.insert_many(data)
 
