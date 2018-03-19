@@ -12,6 +12,7 @@ function getData() {
         if (error) return console.warn(error);
         // need to set timeout conditional on data loading
         buildGraphdivs(data);
+        buildCalendar()
     });
 };
 
@@ -31,44 +32,59 @@ function buildDropdown() {
     });
 };
 
-function buildCalendar() {
-    var calendarDates = [];
-       
-    // Use a request to grab the entire data set
-    Plotly.d3.json("calendar", function(error, data) {
-        if (error) return console.warn(error);
 
-    for (i = 0; i < data.length; i++) {
-        calendarDates.push([new Date(data[i]['published_date']),data[i]['issue_reported']])
-      }
-      console.log(calendarDates)
 
-    });
-
-    console.log(calendarDates)
-};    
 
 function buildCalendar() {
     Plotly.d3.json("calendar", function(error, data) {
         if (error) return console.warn(error);
-
+        
     var tableArray =[];
     for (i = 0; i < data.length; i++) { 
-        tableArray.push(new Date[data[i]["published_date"], data[i]["issue_reported"]]);
+        tableArray.push([new Date(data[i]["published_date"]), data[i]["issue_reported"]]);
     }
-    $(document).ready(function() {
-        $('#calendar_basic').DataTable( {
-            data: tableArray,
-            columns: [
-                { title: "Date" },
-                { title: "Incident" },
-            ]
-        } );
-    } );
+    drawChart(tableArray)
+
 })};
 
+google.charts.load("current", {packages:["calendar"]});
+google.charts.setOnLoadCallback(drawChart);
 
-buildCalendar()
+function drawChart(data) {
+    var dataTable = new google.visualization.DataTable();
+    dataTable.addColumn({ type: 'date', id: 'Date' });
+    dataTable.addColumn({ type: 'number', id: 'Number of Traffic Issues' });
+
+   
+    var tableArray =[];
+   
+
+
+
+    dataTable.addRows(
+        data
+    );
+    
+    var chart = new google.visualization.Calendar(document.getElementById('calendar_basic'));
+
+    var options = {
+      title: "Traffic Issue Calendar",
+      height: 350,
+      calendar: {
+        monthLabel: {
+          fontName: 'Times-Roman',
+          fontSize: 16,
+          color: 'green',
+          bold: true,
+          italic: false
+        }
+      }
+      };
+
+    chart.draw(dataTable, options);
+}
+
+
 
 function BuildPieChart() {
     Plotly.d3.json('api/v1.1/pie/', function(error, data) {

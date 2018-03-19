@@ -20,7 +20,7 @@ connection = MongoClient(MONGODB_URI).get_database()
 ##########################################################################
 ####################  Creating the Database  #############################
 ##########################################################################
-url = "https://data.austintexas.gov/resource/r3af-2r8x.json?$limit=1000&$offset=0"
+url = "https://data.austintexas.gov/resource/r3af-2r8x.json?$limit=50000&$offset=0"
 
 
 traffic_response = req.get(url)
@@ -109,8 +109,11 @@ def calendar():
     dictionary = json.to_dict(orient='records')
     return jsonify(dictionary)
 
-# if __name__ == "__main__":
-#     app.run(host="0.0.0.0", port=int(os.environ.get('PORT')))
 
+# Heroku Mode
 if __name__ == "__main__":
-    app.run(host="0.0.0.0", port=5000)
+    app.run(host="0.0.0.0", port=int(os.environ.get('PORT')))
+    
+#  Home Mode
+# if __name__ == "__main__":
+#     app.run(host="0.0.0.0", port=5000)
