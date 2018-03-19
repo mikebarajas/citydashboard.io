@@ -99,5 +99,15 @@ def pieChartData():
     dictionary = json.to_dict(orient='records')
     return jsonify(dictionary)
 
+# @app.route("/api/v1.1/bar/")
+# def pieChartData():
+#     issues = austinData.collection.find(projection=FIELDS)
+#     df = pd.DataFrame(list(issues))
+#     top10=df[['issue_reported','location_latitude']].groupby(['issue_reported']).count().sort_values('location_latitude',ascending=False)[:10].reset_index().rename(columns={'Location':'Num Incidents'})
+#     json = top10.reset_index(drop=True)
+#     dictionary = json.to_dict(orient='records')
+#     return jsonify(dictionary)
+
 if __name__ == "__main__":
-    app.run(host="0.0.0.0", port=int(os.environ.get('PORT')))
+    # app.run(host="0.0.0.0", port=int(os.environ.get('PORT')))
+    app.run(debug=True)
