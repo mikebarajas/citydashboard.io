@@ -2,6 +2,7 @@ function init() {
     getData();
     buildDropdown();
     BuildPieChart();
+    BuildBarChart();
 };
 
 init();
@@ -84,7 +85,52 @@ function drawChart(data) {
     chart.draw(dataTable, options);
 }
 
-
+function BuildBarChart() {
+    Plotly.d3.json("bar", function(error,stuff) {
+        if (error) return console.warn(error);
+        // console.log(data.keys)
+        // console.log(data.values)
+        <canvas id="myChart" width="400" height="400"></canvas>
+        var ctx = document.getElementById("bar");
+        var myChart = new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: stuff.keys,
+                datasets: [{
+                    label: 'Number of Incidents Per Month',
+                    data: [stuff.values],
+                    backgroundColor: [
+                        'rgba(255, 99, 132, 0.2)',
+                        'rgba(54, 162, 235, 0.2)',
+                        'rgba(255, 206, 86, 0.2)',
+                        'rgba(75, 192, 192, 0.2)',
+                        'rgba(153, 102, 255, 0.2)',
+                        'rgba(255, 159, 64, 0.2)'
+                    ],
+                    borderColor: [
+                        'rgba(255,99,132,1)',
+                        'rgba(54, 162, 235, 1)',
+                        'rgba(255, 206, 86, 1)',
+                        'rgba(75, 192, 192, 1)',
+                        'rgba(153, 102, 255, 1)',
+                        'rgba(255, 159, 64, 1)'
+                    ],
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                scales: {
+                    yAxes: [{
+                        ticks: {
+                            beginAtZero:true
+                        }
+                    }]
+                }
+            }
+        });
+        
+    });
+};
 
 function BuildPieChart() {
     Plotly.d3.json('api/v1.1/pie/', function(error, data) {

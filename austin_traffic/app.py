@@ -90,6 +90,24 @@ def dates():
     json_dates = json.dumps(json_dates, default=json_util.default)
     return json_dates 
 
+@app.route("/bar")
+def barChartData():
+    issues = austinData.collection.find(projection=FIELDS)
+    df = pd.DataFrame(list(issues))
+    df['published_date'] = df['published_date'].str.replace('-',',')
+    df['published_date'] = df['published_date'].str.replace(',','')
+    df_date = df.sort_values('published_date')
+    df_date[["published_date"]] = df_date[["published_date"]].astype(int)
+    df_bins = [20170925, 20171031, 20171130, 20171231, 20180131, 20180228, 20180331]
+    df_labels = ["October_2017", "November_2017", "December_2017", "January_2018", "February_2018", "March_2018"]
+    df_date["month"] = pd.cut(df_date["published_date"], df_bins, labels=df_labels)
+    df_date[["published_date"]] = df_date[["published_date"]].astype(str)
+    group_df = df_date.groupby(["month"])
+    group_ct = group_df["issue_reported"].count()
+    dictionary = group_ct.to_dict()
+    return dictionary
+    #return jsonify(dictionary)
+
 @app.route("/api/v1.1/pie/")
 def pieChartData():
     issues = austinData.collection.find(projection=FIELDS)
@@ -111,9 +129,9 @@ def calendar():
 
 
 # Heroku Mode
-if __name__ == "__main__":
-    app.run(host="0.0.0.0", port=int(os.environ.get('PORT')))
+# if __name__ == "__main__":
+#     app.run(host="0.0.0.0", port=int(os.environ.get('PORT')))
     
 #  Home Mode
-# if __name__ == "__main__":
-#     app.run(host="0.0.0.0", port=5000)
+if __name__ == "__main__":
+    app.run(host="0.0.0.0", port=5000)
