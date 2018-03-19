@@ -31,14 +31,53 @@ function buildDropdown() {
     });
 };
 
+function buildCalendar() {
+    var calendarDates = [];
+       
+    // Use a request to grab the entire data set
+    Plotly.d3.json("calendar", function(error, data) {
+        if (error) return console.warn(error);
+
+    for (i = 0; i < data.length; i++) {
+        calendarDates.push([new Date(data[i]['published_date']),data[i]['issue_reported']])
+      }
+      console.log(calendarDates)
+
+    });
+
+    console.log(calendarDates)
+};    
+
+function buildCalendar() {
+    Plotly.d3.json("calendar", function(error, data) {
+        if (error) return console.warn(error);
+
+    var tableArray =[];
+    for (i = 0; i < data.length; i++) { 
+        tableArray.push(new Date[data[i]["published_date"], data[i]["issue_reported"]]);
+    }
+    $(document).ready(function() {
+        $('#calendar_basic').DataTable( {
+            data: tableArray,
+            columns: [
+                { title: "Date" },
+                { title: "Incident" },
+            ]
+        } );
+    } );
+})};
+
+
+buildCalendar()
+
 function BuildPieChart() {
-    Plotly.d3.json('/api/v1.1/pie/', function(error, data) {
+    Plotly.d3.json('api/v1.1/pie/', function(error, data) {
         if (error) return console.warn(error);
        labels=[];
        values=[];
        for (i = 0; i < 10; i++) {
-           labels.push(data['issue_reported'][i].toString());
-           values.push(+data['location_latitude'][i]);
+           labels.push(data[i]['issue_reported'].toString());
+           values.push(+data[i]['location_latitude']);
        }
 
         var pieData = [{

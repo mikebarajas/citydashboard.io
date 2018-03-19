@@ -12,7 +12,7 @@ import os
 
 MONGODB_URI = os.environ.get('MONGODB_URI')
 if not MONGODB_URI:
-    MONGODB_URI = "mongodb://localhost:27017/austinDB"
+    MONGODB_URI = "mongodb://mike:blahblah@ds113169.mlab.com:13169/t3st"
 
 app = Flask(__name__)
 connection = MongoClient(MONGODB_URI).get_database()
@@ -99,5 +99,18 @@ def pieChartData():
     dictionary = json.to_dict(orient='records')
     return jsonify(dictionary)
 
+@app.route("/calendar")
+def calendar():
+    issues = austinData.collection.find(projection=FIELDS)
+    df = pd.DataFrame(list(issues))
+    df['published_date'] = df['published_date'].str.replace('-',', ')
+    calendar=df[['published_date','issue_reported']].groupby(['published_date']).count().rename(columns={'Location':'Num Incidents'})
+    json = calendar.reset_index()
+    dictionary = json.to_dict(orient='records')
+    return jsonify(dictionary)
+
+# if __name__ == "__main__":
+#     app.run(host="0.0.0.0", port=int(os.environ.get('PORT')))
+
 if __name__ == "__main__":
-    app.run(host="0.0.0.0", port=int(os.environ.get('PORT')))
+    app.run(host="0.0.0.0", port=5000)
