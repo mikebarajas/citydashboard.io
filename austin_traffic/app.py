@@ -57,7 +57,7 @@ posts_id = austinData.collection.insert_many(data)
 
 
 
-FIELDS = {'_id': False, 'address': True, 'issue_reported': True, 'location_latitude': True, 'location_longitude': True, 'published_date': True}
+FIELDS = {'_id': False, 'address': True, 'issue_reported': True, 'latitude': True, 'longitude': True, 'published_date': True}
 
 @app.route('/')
 def index():
@@ -94,7 +94,7 @@ def dates():
 def pieChartData():
     issues = austinData.collection.find(projection=FIELDS)
     df = pd.DataFrame(list(issues))
-    top10=df[['issue_reported','location_latitude']].groupby(['issue_reported']).count().sort_values('location_latitude',ascending=False)[:10].reset_index().rename(columns={'Location':'Num Incidents'})
+    top10=df[['issue_reported','latitude']].groupby(['issue_reported']).count().sort_values('latitude',ascending=False)[:10].reset_index().rename(columns={'Location':'Num Incidents'})
     json = top10.reset_index(drop=True)
     dictionary = json.to_dict(orient='records')
     return jsonify(dictionary)
