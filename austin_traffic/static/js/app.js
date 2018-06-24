@@ -93,7 +93,7 @@ function BuildPieChart() {
        values=[];
        for (i = 0; i < 10; i++) {
            labels.push(data[i]['issue_reported'].toString());
-           values.push(+data[i]['location_latitude']);
+           values.push(+data[i]['latitude']);
        }
 
         var pieData = [{
@@ -189,8 +189,8 @@ function buildMap(data) {
     var incident = [];
     
     for (i = 0; i < data.length; i++) { 
-        lat.push(data[i].location_latitude);
-        lon.push(data[i].location_longitude);
+        lat.push(data[i].latitude);
+        lon.push(data[i].longitude);
         incident.push(data[i]["issue_reported"])}
     
         // Define streetmap and darkmap layers
@@ -255,7 +255,7 @@ function buildMap(data) {
 function buildTable(data) {
     var tableArray =[];
     for (i = 0; i < data.length; i++) { 
-        tableArray.push([data[i]["issue_reported"], data[i]["published_date"], data[i]["address"], data[i]["location_latitude"], data[i]["location_longitude"]]);
+        tableArray.push([data[i]["issue_reported"], data[i]["published_date"], data[i]["address"], data[i]["latitude"], data[i]["longitude"]]);
     }
     $(document).ready(function() {
         $('#rawData').DataTable( {

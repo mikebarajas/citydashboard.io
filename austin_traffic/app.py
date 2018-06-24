@@ -12,10 +12,10 @@ import os
 
 MONGODB_URI = os.environ.get('MONGODB_URI')
 if not MONGODB_URI:
-    MONGODB_URI = "mongodb://mike:blahblah@ds113169.mlab.com:13169/t3st"
+    MONGODB_URI = "mongodb://user:qwe123!@ds117431.mlab.com:17431/heroku_phn1ffrt"
 
 app = Flask(__name__)
-connection = MongoClient(MONGODB_URI).get_database()
+connection = MongoClient(MONGODB_URI).get_database('heroku_phn1ffrt')
 
 ##########################################################################
 ####################  Creating the Database  #############################
