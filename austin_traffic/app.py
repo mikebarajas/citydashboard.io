@@ -32,7 +32,7 @@ df = pd.DataFrame(traffic_json)
 time.sleep(1)
 
 # Selecting specific columns needed
-clean_df = df[['address','issue_reported','location_latitude', 'location_longitude', 'published_date']]
+clean_df = df[['address','issue_reported','latitude', 'longitude', 'published_date']]
 
 # Drop any NAN values and append to a list
 dropped = clean_df.dropna()
